@@ -27,13 +27,22 @@ public class InvoiceServiceTest {
 		double fare = invoiceGenerator.calculateFare(distance, time);
 		Assert.assertEquals(5, fare, 0.0);
 	}
-	
+
 	@Test
 	public void givenMultipleRidesShouldReturnInvoiceSummary() {
-		Ride[] rides = { new Ride(2.0, 5), 
-					     new Ride(0.1, 1) };
+		Ride[] rides = { new Ride(2.0, 5), new Ride(0.1, 1) };
 		InvoiceSummary invoiceSummary = invoiceGenerator.calculateFare(rides);
-		InvoiceSummary expectedInvoiceSummary=new InvoiceSummary(2,30.0);
-		Assert.assertEquals(expectedInvoiceSummary,invoiceSummary);
+		InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30.0);
+		Assert.assertEquals(expectedInvoiceSummary, invoiceSummary);
+	}
+
+	@Test
+	public void givenUserIdShouldReturnTheInvoiceSummary() {
+		int userId = 2;
+		RideRepository rideRepository = new RideRepository();
+		Ride[] rideList = rideRepository.getRideList(userId);
+		InvoiceSummary invoiceSummary = invoiceGenerator.calculateFare(rideList);
+		InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 65.0);
+		Assert.assertEquals(expectedInvoiceSummary, invoiceSummary);
 	}
 }
